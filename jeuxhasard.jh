@@ -1,0 +1,72 @@
+/**
+ * JeuxHasardPointJeux entity.
+ * @author sanda
+ *     relation
+   ManyToOne avec JeuxHasardRecttteMachine
+ */
+entity JeuxHasardPointJeux {
+    refPointJeu String
+    nomPointJeu String
+}
+/** 
+ * JeuxHasard entity.
+ * @author sanda
+ *  methode
+ *  relation
+ */
+entity JeuxHasard {
+    dateCollecte Date
+}
+/** 
+ * JeuxHasardMachineJeu entity.
+ * @author sanda
+ *  methode
+ *  relation
+ ManyToOne avec JeuxHasardPointJeux
+ */
+entity JeuxHasardMachineJeu {
+    refMachineJeu Date
+    refFabriquant Date
+}
+/** 
+ * JeuxHasard entity.
+ * @author sanda
+ *  methode
+ *  relation
+ ManyToOne avec JeuxHasardPointJeux
+ */
+entity JeuxHasardRecttteMachine {
+    dateRecette Date
+    montantRecette Double
+}
+/**
+ * One to many relationship.
+ */
+relationship OneToMany {
+    JeuxHasardMachineJeu to JeuxHasardRecttteMachine
+}
+relationship OneToMany {
+    JeuxHasardPointJeux to JeuxHasardMachineJeu
+}
+relationship OneToMany {
+    JeuxHasard to JeuxHasardPointJeux
+}
+relationship OneToMany {
+    EnteteDeclaration to JeuxHasard
+}
+/**
+ * One to many relationship.
+    Déclaration de nouvelle machine de jeu 24 heures avant sa mise en service
+ */
+relationship OneToMany {
+    EnteteDeclaration to JeuxHasardMachineJeu
+}
+// Set pagination options
+paginate JeuxHasardPointJeux, JeuxHasardMachineJeu, JeuxHasardRecttteMachine with infinite-scroll
+paginate JeuxHasard with pagination
+// Use Data Transfert Objects (DTO)
+// dto * with mapstruct
+// Set service options to all except few
+service all with serviceImpl except Contact, SiteWeb
+// Set an angular suffix
+// angularSuffix * with mySuffix
