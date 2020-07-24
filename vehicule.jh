@@ -1,0 +1,122 @@
+DEFAULT_MIN_LENGTH = 10
+DEFAULT_MAX_LENGTH = 50
+
+enum TypeMoteur {
+    ESSENCE, 
+    ELECTRIQUE, 
+    HYBRID, 
+    DIESEL, 
+    VAPEUR
+}
+/**
+ * CategorieVehicule entity.
+ * @author Sanda.
+ *   C'est la table qui permet de repertorier
+    l'ensemble des engins roulants de façon
+ *     catégorisé avec une relation reflexive
+ * qui permet de mieux structure
+    RELATION
+        - OneToMany avec MarqueVehicule
+ */
+entity CategorieVehicule {
+   categorie String maxlength(DEFAULT_MIN_LENGTH)
+   type Integer 
+}
+/**
+ * MarqueVehicule entity.
+ * @author Sanda.
+ *     Cette table permet de declarer
+ *    - Marque
+ *    - Modele
+ *    - Serie
+ *    - Annee
+ */
+entity MarqueVehicule {
+    marque String maxlength(DEFAULT_MIN_LENGTH)
+    logo String maxlength(DEFAULT_MIN_LENGTH)
+}
+/**
+ * Modele entity.
+ * @author Sanda.
+ *     Cette table permet de declarer
+ *    - Marque
+ *    - Modele
+ *    - Serie
+ *    - Annee
+ */
+entity Modele {
+    modele String maxlength(DEFAULT_MIN_LENGTH)
+}
+/**
+ * Serie entity.
+ * @author Sanda.
+ *     Cette table permet de declarer
+ *    - Marque
+ *    - Modele
+ *    - Serie
+ *    - Annee
+ */
+entity Serie {
+    serie String maxlength(DEFAULT_MIN_LENGTH)
+}
+/**
+ * Vehicule entity.
+ * @author Sanda.
+ *    Relation
+ * ManyToOne avec MarqueVehicule
+ */
+entity Vehicule {
+    numMoteur String required maxlength(DEFAULT_MIN_LENGTH)
+    numChassis String required maxlength(DEFAULT_MIN_LENGTH)
+    typeMoteur TypeMoteur
+    puissanceCV Integer  
+    puissance Integer  
+}
+/**
+ * VehiculePersonnalise entity.
+ * @author Sanda.
+ *    Cette table permet de categoriser les 
+ *    differentes impositions existant
+ */
+entity VehiculePersonnalise {
+    numImmatriculation String maxlength(DEFAULT_MIN_LENGTH)
+    carteGrise String maxlength(DEFAULT_MIN_LENGTH)
+}
+enum TypeTransport {
+    PERSONNE, 
+    MARCHANDISE
+}
+/**
+ * SommeEncaisse entity.
+ * @author Sanda.
+ *    Cette table permet de categoriser les 
+ *    differentes impositions existant
+ *    RELATION
+ *  ManyToOne avec VehiculePersonnalise
+ */
+entity DonneeIrtr {
+    typeTransport TypeTransport
+    chargeUtile Double
+}
+relationship OneToMany {
+	Vehicule to VehiculePersonnalise
+    CategorieVehicule to MarqueVehicule
+	CategorieVehicule to CategorieVehicule
+	MarqueVehicule to Vehicule
+    MarqueVehicule to Modele
+    Modele to Serie
+    Serie to Serie
+}
+relationship ManyToOne {
+	VehiculePersonnalise to DonneeIrtr
+}
+// Set pagination options
+paginate DetailDeduction with infinite-scroll
+paginate DonneeTva with pagination
+// Use Data Transfert Objects (DTO)
+dto * with mapstruct
+// Set service options to all except few
+service all with serviceImpl except Contact, SiteWeb
+// Set an angular suffix
+ angularSuffix * with vehicule
+ microservice * with vehicule
